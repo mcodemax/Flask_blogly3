@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %} <h3>Edit Post</h3> {% endblock %}
+
+{% block content %}
+
+<section id="edit-post">
+
+    <h4>Current Post Title: <br>
+        {{post.title}}
+    </h4>
+
+    <div>
+        <h4>Current Post Content:</h4> <br>
+        {{post.content}}
+        <h5>By: {{post.user.first_name}} {{post.user.last_name}}</h5>
+    </div>
+
+    <form>
+        <label for="title">Change Title:</label>
+        <br>
+        <input type="text" name="title" id="change-title">
+        <br>
+        <label for="content">Change Content:</label>
+        <br>
+        <input type="text" name="content" id="change-content">
+        <br>
+        
+        <input type="submit" formmethod="POST" formaction="/posts/{{post.id}}/edit" value="SAVE">
+        <input type="submit" formmethod="GET" formaction="/users/{{post.user.id}}" value="CANCEL">
+       
+    </form>
+
+</section>
+
+{% endblock %}

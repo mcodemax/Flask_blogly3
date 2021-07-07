@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} {{question}} {% endblock %}
+
+{% block content %} 
+<p>{{instructions}}</p>
+{% for msg in get_flashed_messages() %}
+    <p>{{msg}}</p>
+{% endfor %}
+<form action='/questions/{{q_num}}'
+     method="POST">
+     <!-- don't put application logic in your UI/template -->
+     <!-- return redirect(...) in backend-->
+   
+    {% for choice in choices %}
+    <input type="radio" id="" name="answer" value="{{choice}}">{{choice}}<br>
+    {% endfor %}
+    <!-- name in radio choice must all be the same otherwise you can select more than one option -->
+    
+    <input type="submit" value="Next" />
+</form>
+
+{% endblock %}
+

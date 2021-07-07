@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+ 
+
+{% block title %} <h3>Post Detail Page</h3> {% endblock %}
+
+ 
+
+{% block content %}
+
+<section id="post-details">
+
+    <h4>{{post.title}}</h4>
+
+    <div>
+        {{post.content}}
+        <h5>By: {{post.user.first_name}} {{post.user.last_name}}</h5>
+    </div>
+
+    <div>
+        <section><!-- have edit user btn and delete btn -->
+            <form method="GET" action="/posts/{{post.id}}/edit">
+                <button type="submit">EDIT</button>
+            </form>
+            <form method="POST" action="/posts/{{post.id}}/delete">
+                <button type="submit">DELETE</button>
+            </form>         
+            <form method="GET" action="/users/{{user_num}}">
+                <button type="submit">CANCEL</button>
+            </form>
+        </section>
+    </div>
+        
+</section>
+
+{% endblock %}
+ 

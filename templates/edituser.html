@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %} <h3>Edit a user</h3> {% endblock %}
+
+{% block content %}
+
+<section id="edit-user">
+    <h4>Current name: {{user.first_name}} {{user.last_name}}</h4>
+    <form>
+        <label for="first-name">Change First Name:</label>
+        <br>
+        <input type="text" name="first-name" id="first-name">
+        <br>
+        <label for="last-name">Change Last Name:</label>
+        <br>
+        <input type="text" name="last-name" id="last-name">
+        <br>
+        <label for="imglink">Change Image URL</label>
+        <br>
+        <input type="text" name="imglink" id="imglink">
+
+        <br>
+        <input type="submit" formmethod="POST" formaction="/users/{{user_num}}/edit" value="SAVE">
+        <input type="submit" formmethod="GET" formaction="/users/{{user_num}}" value="CANCEL">
+       
+    </form>
+
+  
+
+</section>
+
+{% endblock %}

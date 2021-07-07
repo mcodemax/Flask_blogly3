@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+    <h3>Make a Post for {{user.first_name}} 
+        {% if user.last_name %}
+            {{user.last_name}} 
+        {% endif %}
+    </h3> 
+{% endblock %}
+
+{% block content %}
+
+<form>
+
+  <label for="title">Title:</label><br>
+
+  <input type="text" id="post-title" name="title"><br>
+
+  <label for="content">Content:</label><br>
+
+  <input type="text" id="post-content" name="content"><br><br>
+
+  <input type="submit" formmethod="POST" formaction="/users/{{user_num}}/posts/new" value="ADD">
+
+  <input type="submit" formmethod="GET" formaction="/users/{{user_num}}" value="CANCEL">
+
+</form>
+
+{% endblock %}
