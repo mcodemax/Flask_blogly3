@@ -58,4 +58,42 @@ class Post(db.Model):
                         db.ForeignKey('users.id'),
                         nullable=False)                      
 
+    tags = db.relationship('Tag',
+                            secondary='posts_tags',
+                            backref='posts')
+
+class Tag(db.Model):
+    """Tag."""
+
+    __tablename__ = "tags"
+
+    def __repr__(self):
+        return f"<Tag id={self.id} name={self.name}>"
+
+    id = db.Column(db.Integer,
+                    primary_key=True,
+                    autoincrement=True)
     
+    name = db.Column(db.String(50),
+                        nullable=False,
+                        unique=True)
+
+class PostTag(db.Model):
+    """M2M Post Tag relationship table"""                        
+
+    __tablename__ = "posts_tags"
+
+    def __repr__(self):
+        return f"<Post id={self.post_id} Tag id={self.tag_id}>"
+
+    post_id = db.Column(db.Integer,
+                       db.ForeignKey("posts.id"),
+                       primary_key=True)
+
+    tag_id = db.Column(db.Integer,
+                       db.ForeignKey("tags.id"),
+                       primary_key=True)
+    
+
+    
+
