@@ -1,6 +1,5 @@
 """Blogly application."""
 
-import re
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Post, PostTag, Tag
@@ -257,7 +256,7 @@ def list_tags():
     return render_template('taglist.html', tag_list=tag_list)
 
 
-@app.route('/tags/<int:tag_id>')
+@app.route('/tags/<int:tag_id>') #delete route not working yet cause cascade
 def show_tag_details(tag_id):
     """show a tag's details
     Have links to edit form and to delete.
@@ -265,4 +264,21 @@ def show_tag_details(tag_id):
     tag = Tag.query.get(tag_id)
 
     return render_template('tagdetails.html',tag=tag)
+
+@app.route('/tags/<int:tag_id>/delete',methods=["POST"]) #delete route not working yet cause cascade
+def delete_tag(tag_id):
+    """delete a tag
+    """
+    tag = Tag.query.get(tag_id)
+
+    try:
+        db.session.delete(tag)
+        db.session.commit()
+    except:
+        flash(f"Tag unable to be deleted")
+        return redirect('/tags')
+        #maybe flash 'tag unable to be deleted'
+
+
+    return redirect('/tags')
 

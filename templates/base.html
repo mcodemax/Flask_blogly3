@@ -8,6 +8,9 @@
     <title>Blogly</title>
 </head>
 <body>
+    {% for msg in get_flashed_messages() %}
+        <p class="flash">{{ msg }}</p>
+    {% endfor %}
     {% block title %} title goes here {% endblock %}
     <!-- the % block content, does not have to be named content, it just so the template can find where to insert itself -->
     {% block content %} content goes here {% endblock %}
