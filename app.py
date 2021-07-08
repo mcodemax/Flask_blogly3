@@ -1,5 +1,6 @@
 """Blogly application."""
 
+import re
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Post, PostTag, Tag
@@ -247,3 +248,21 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(f"/users/{user.id}")
+
+@app.route('/tags')
+def list_tags():
+    """List all tags w/ links to tag detail page"""
+    tag_list = Tag.query.all()
+    
+    return render_template('taglist.html', tag_list=tag_list)
+
+
+@app.route('/tags/<int:tag_id>')
+def show_tag_details(tag_id):
+    """show a tag's details
+    Have links to edit form and to delete.
+    """
+    tag = Tag.query.get(tag_id)
+
+    return render_template('tagdetails.html',tag=tag)
+

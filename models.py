@@ -60,6 +60,7 @@ class Post(db.Model):
 
     tags = db.relationship('Tag',
                             secondary='posts_tags',
+                            cascade="all, delete",
                             backref='posts')
 
 class Tag(db.Model):
@@ -76,7 +77,7 @@ class Tag(db.Model):
     
     name = db.Column(db.String(50),
                         nullable=False,
-                        unique=True)
+                        unique=True)#add on edit cascade?
 
 class PostTag(db.Model):
     """M2M Post Tag relationship table"""                        
@@ -94,6 +95,10 @@ class PostTag(db.Model):
                        db.ForeignKey("tags.id"),
                        primary_key=True)
     
-
+    # post = db.relationship("Post", backref="posttag", cascade="all, delete")           
+    # tag = db.relationship("Tag", backref="posttag", cascade="all, delete")           
+    # For many-to-one relationship PostTag.post, delete-orphan cascade is normally
+    #  configured only on the "one" side of a one-to-many relationship,
+    #  and not on the "many" side of a many-to-one or many-to-many relationship. 
     
 
