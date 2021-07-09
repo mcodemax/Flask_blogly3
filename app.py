@@ -265,6 +265,27 @@ def show_tag_details(tag_id):
 
     return render_template('tagdetails.html',tag=tag)
 
+@app.route('/tags/<int:tag_id>/edit')
+def edit_tag(tag_id):
+    tag = Tag.query.get(tag_id)
+
+    return render_template(f"edittag.html", tag=tag)
+
+@app.route('/tags/<int:tag_id>/edit', methods=["POST"])
+def change_tag(tag_id):
+    tag = Tag.query.get(tag_id)
+
+    name = request.form.get("tag")
+
+    if '' != name and len(name) <= 50:
+        tag.name = name
+        db.session.commit()
+    else:
+        flash(f"invalid tag change")
+        redirect(f"/tags/{tag_id}/edit")
+
+    return redirect('/tags')
+
 @app.route('/tags/<int:tag_id>/delete',methods=["POST"]) #delete route not working yet cause cascade
 def delete_tag(tag_id):
     """delete a tag
@@ -277,8 +298,25 @@ def delete_tag(tag_id):
     except:
         flash(f"Tag unable to be deleted")
         return redirect('/tags')
-        #maybe flash 'tag unable to be deleted'
-
-
+        
     return redirect('/tags')
 
+@app.route('/tags/new')
+def show_new_tag_form():
+
+    return render_template('maketag.html')
+
+@app.route('/tags/new', methods=["POST"])
+def create_new_tag():
+    
+    name = request.form.get("tag")
+    tag = Tag(name=name)
+
+    if '' != name and len(name) <= 50:
+        db.session.add(tag)
+        db.session.commit()
+    else:
+        flash(f"invalid tag name add")
+        redirect(f"/tags/new")
+    
+    return redirect('/tags')

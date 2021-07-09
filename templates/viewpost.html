@@ -18,6 +18,13 @@
     </div>
 
     <div>
+        Tags: 
+        {% for tag in post.tags %}
+            <span class="tag">{{tag.name}}</span>
+        {% endfor %}
+    </div>
+
+    <div>
         <section><!-- have edit user btn and delete btn -->
             <form method="GET" action="/posts/{{post.id}}/edit">
                 <button type="submit">EDIT</button>

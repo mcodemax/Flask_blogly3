@@ -8,6 +8,14 @@
     <h5>{{tag.name}}</h5>
     
     <div>
+        <ul>
+            {% for post in tag.posts %}
+                <li><a href="/tags/{{tag.id}}">{{post.title}}</a></li>
+            {% endfor %}
+            
+        </ul>
+
+
         <section><!-- have edit user btn and delete btn -->
             
             <form method="GET" action="/tags/{{tag.id}}/edit">
