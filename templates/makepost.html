@@ -20,10 +20,19 @@
 
   <input type="text" id="post-content" name="content"><br><br>
 
+  <section>
+      <h6>Tags:</h6>
+      {% for tag in tags %}
+      <input type="checkbox" name="tags" value="{{tag.name}}">{{tag.name}}<br/>
+      {% endfor %}
+  </section>
+  
   <input type="submit" formmethod="POST" formaction="/users/{{user_num}}/posts/new" value="ADD">
 
   <input type="submit" formmethod="GET" formaction="/users/{{user_num}}" value="CANCEL">
 
 </form>
+
+
 
 {% endblock %}

@@ -165,8 +165,9 @@ def delete_user(user_num):
 def new_post_form(user_num):
 
     user = User.query.get_or_404(user_num)
-    
-    return render_template('makepost.html',user=user,user_num=user_num)
+    tags = Tag.query.all()
+
+    return render_template('makepost.html',user=user,user_num=user_num,tags=tags)
 
 
 @app.route('/users/<int:user_num>/posts/new', methods=["POST"])
@@ -174,6 +175,7 @@ def add_new_post(user_num):
     """Handle add form; add post and redirect to the user detail page."""
 
     user = User.query.get_or_404(user_num)
+    tag_list = request.form.getlist("tags")
 
     title = request.form.get("title")
     content = request.form.get("content")
@@ -185,7 +187,12 @@ def add_new_post(user_num):
 
     new_post = Post(title=title, content=content, user_id=user_num)#idk if text needs to be paren or not
 
-    
+
+    # iterate through tag_list and append to new_post
+    for tag in tag_list:
+        # append to new_post
+        # look in the lectures on how to append tags
+
     db.session.add(new_post)
     db.session.commit()
 
@@ -196,7 +203,9 @@ def add_new_post(user_num):
 def show_post(post_id):
     """Show a post. Show buttons to edit and delete the post."""
     post = Post.query.get_or_404(post_id)
+    
 
+    # show al the tags for this post
     return render_template('viewpost.html', post=post)
 
 
