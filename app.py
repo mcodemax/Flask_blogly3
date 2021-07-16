@@ -176,6 +176,7 @@ def add_new_post(user_num):
 
     user = User.query.get_or_404(user_num)
     tag_list = request.form.getlist("tags")
+    
 
     title = request.form.get("title")
     content = request.form.get("content")
@@ -188,14 +189,16 @@ def add_new_post(user_num):
     new_post = Post(title=title, content=content, user_id=user_num)#idk if text needs to be paren or not
 
 
-    # iterate through tag_list and append to new_post
     for tag in tag_list:
-        # append to new_post
-        # look in the lectures on how to append tags
+        
+        tag = Tag.query.filter(Tag.name == tag).first()
+        
+        new_post.tags.append(tag)    
 
-    db.session.add(new_post)
+        
+    db.session.add(new_post)    
     db.session.commit()
-
+    
     return render_template('details.html',user=user)
 
 
@@ -214,8 +217,9 @@ def edit_post_form(post_id):
     """Show form to edit a post, and to cancel (back to user page)."""
 
     post = Post.query.get_or_404(post_id)
+    tags = Tag.query.all()
 
-    return render_template('editpost.html', post=post)
+    return render_template('editpost.html', post=post,tags=tags)
 
 
 @app.route('/posts/<int:post_id>/edit', methods=["POST"])
@@ -225,6 +229,10 @@ def edit_post(post_id):
 
     title = request.form.get("title")
     content = request.form.get("content")
+    tag_list = request.form.getlist("tags")
+    tags = Tag.query.all()
+
+    #query and search for checked tags, add if check marked, delete if not
 
     if len(title) > 50 or len(content) > 5000: #bad to hardcode numbers; refactor possibly
         redir_route = '/posts/' + str(post_id) + '/edit'
@@ -236,13 +244,26 @@ def edit_post(post_id):
     if '' != content:
         post.content = content
 
-    #update created at maybe or updated at col
+    
+    
+    # empty out all the tags in a post
+    # select all PostTag where post = the one im editing, then delete them
+    post_tags = PostTag.query.filter(PostTag.post_id == post.id).all()
+    for tag in post_tags:
+        db.session.delete(tag)
+    
+
+    # add back in all tags the user wants back in, via the app
+    for tag in tag_list:
+        tag = Tag.query.filter(Tag.name == tag).first()
+        
+        post.tags.append(tag)    
     
 
     db.session.commit()
 
     return redirect(f"/posts/{post_id}")
-    #might need to make this a str to return correct route
+    
 
 
 @app.route('/posts/<int:post_id>/delete', methods=["POST"])

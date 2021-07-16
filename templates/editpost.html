@@ -26,9 +26,18 @@
         <input type="text" name="content" id="change-content">
         <br>
         
+        <section>
+            <h6>Tags:</h6>
+            {% for tag in tags %}
+                <input type="checkbox" name="tags" value="{{tag.name}}"
+                {% if tag in post.tags %}checked{% endif %}>{{tag.name}}<br/>
+            {% endfor %}
+        </section>
+
         <input type="submit" formmethod="POST" formaction="/posts/{{post.id}}/edit" value="SAVE">
         <input type="submit" formmethod="GET" formaction="/users/{{post.user.id}}" value="CANCEL">
-       
+        
+        
     </form>
 
 </section>
